@@ -1,0 +1,26 @@
+_BASE_: Base-BMask-R-CNN-FPN.yaml
+MODEL:
+  WEIGHTS: detectron2://ImageNetPretrained/MSRA/R-50.pkl
+  MASK_ON: true
+  RESNETS:
+    DEPTH: 50
+  ROI_HEADS:
+    NUM_CLASSES: 13
+  RETINANET:
+    NUM_CLASSES: 13
+  SEM_SEG_HEAD:
+    NUM_CLASSES: 13
+INPUT:
+  MIN_SIZE_TRAIN: (800,)
+TEST:
+  EVAL_PERIOD: 1120
+DATASETS:
+  TRAIN: ("my_dataset_train",)
+  TEST: ("my_dataset_val",)
+SOLVER:
+  IMS_PER_BATCH: 2
+  BASE_LR: 0.02
+  STEPS: (60000, 80000)
+  MAX_ITER: 90000
+  CHECKPOINT_PERIOD: 1120
+OUTPUT_DIR: "/content/drive/MyDrive/ChestX-Det/BMASK_detectron2/v1"

@@ -39,6 +39,7 @@ from detectron2.evaluation import (
 )
 from detectron2.modeling import GeneralizedRCNNWithTTA
 from bmaskrcnn import add_boundary_preserving_config
+from detectron2.data.datasets import register_coco_instances
 
 class Trainer(DefaultTrainer):
     """
@@ -159,6 +160,8 @@ def main(args):
 
 
 if __name__ == "__main__":
+    register_coco_instances("my_dataset_train", {}, "/content/coco_format_v2/fold0/train.json", "/content/train")
+    register_coco_instances("my_dataset_val", {}, "/content/coco_format_v2/fold0/valid.json", "/content/train")
     args = default_argument_parser().parse_args()
     print("Command Line Args:", args)
     launch(
