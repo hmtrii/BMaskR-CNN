@@ -10,8 +10,8 @@ MODEL:
     NUM_CLASSES: 13
   SEM_SEG_HEAD:
     NUM_CLASSES: 13
-  PIXEL_MEAN: [123.675, 116.28, 103.53]
-  PIXEL_STD: [58.395, 57.12, 57.375]
+  PIXEL_MEAN: [103.530, 116.280, 123.675]
+  PIXEL_STD: [57.375, 57.120, 58.395]
 INPUT:
   MIN_SIZE_TRAIN: (800, 1400)
   MAX_SIZE_TRAIN: 1600
@@ -20,9 +20,10 @@ INPUT:
 TEST:
   EVAL_PERIOD: 1120
   AUG:
-    ENABLED: True
+    ENABLED: true
     MIN_SIZES: (1200,)
     MAX_SIZE: 1200
+    FLIP: false
 DATASETS:
   TRAIN: ("my_dataset_train",)
   TEST: ("my_dataset_val",)
@@ -34,4 +35,4 @@ SOLVER:
   WEIGHT_DECAY: 0.00001
   WARMUP_ITERS: 500
   CHECKPOINT_PERIOD: 1120
-OUTPUT_DIR: "/content/drive/MyDrive/ChestX-Det/BMASK_detectron2/v1"
+OUTPUT_DIR: "./outputs"
