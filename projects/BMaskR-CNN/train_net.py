@@ -140,6 +140,7 @@ def main(args):
         )
         res = Trainer.test(cfg, model)
         if cfg.TEST.AUG.ENABLED:
+            import pdb; pdb.set_trace()
             res.update(Trainer.test_with_TTA(cfg, model))
         if comm.is_main_process():
             verify_results(cfg, res)
@@ -158,12 +159,20 @@ def main(args):
         )
     return trainer.train()
 
+def get_parser():
+    parser = default_argument_parser()
+    parser.add_argument('--train-dir', type=str, help='train image directory')
+    parser.add_argument('--val-dir', type=str, help='validation image directory')
+    parser.add_argument('--train-anno', type=str, help='train annotation file')
+    parser.add_argument('--val-anno', type=str, help='validation annotation file')
+    return parser
 
 if __name__ == "__main__":
-    register_coco_instances("my_dataset_train", {}, "/content/coco_format_v2/fold0/train.json", "/content/train")
-    register_coco_instances("my_dataset_val", {}, "/content/coco_format_v2/fold0/valid.json", "/content/train")
-    args = default_argument_parser().parse_args()
+    args = get_parser().parse_args()
     print("Command Line Args:", args)
+    if not args.eval_only:
+        register_coco_instances("my_dataset_train", {}, args.train_anno, args.train_dir)
+    register_coco_instances("my_dataset_val", {}, args.val_anno, args.val_dir)
     launch(
         main,
         args.num_gpus,
